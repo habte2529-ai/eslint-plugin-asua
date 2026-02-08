@@ -1,0 +1,9 @@
+src/
+tests/
+tsconfig.json
+.eslintrc.js
+vitest.config.ts
+.github/
+node_modules/
+*.test.ts
+*.test.js

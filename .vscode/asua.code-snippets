@@ -1,0 +1,118 @@
+{
+  "ASUA Header - L1 Boundary": {
+    "prefix": "asua-l1",
+    "body": [
+      "// @asua layer: boundary",
+      "// @asua kind: boundary",
+      "// @asua runtime: server",
+      "// @asua purity: effectful",
+      "// @asua exposure: internal",
+      "// @asua composition-role: root"
+    ],
+    "description": "ASUA L1 Boundary header"
+  },
+  "ASUA Header - L2 Screen": {
+    "prefix": "asua-l2",
+    "body": [
+      "// @asua layer: screen",
+      "// @asua kind: boundary",
+      "// @asua runtime: server",
+      "// @asua purity: effectful",
+      "// @asua composition-role: composite"
+    ],
+    "description": "ASUA L2 Screen header"
+  },
+  "ASUA Header - L3 Orchestrator": {
+    "prefix": "asua-l3",
+    "body": [
+      "// @asua layer: orchestrator",
+      "// @asua kind: orchestration",
+      "// @asua runtime: ${1|server,client|}",
+      "// @asua purity: effectful",
+      "// @asua exposure: ${2|public,internal|}",
+      "// @asua composition-role: ${3|root,composite|}"
+    ],
+    "description": "ASUA L3 Orchestrator header"
+  },
+  "ASUA Header - L4 Structure": {
+    "prefix": "asua-l4",
+    "body": [
+      "// @asua layer: structure",
+      "// @asua kind: layout",
+      "// @asua runtime: ${1|universal,client,server|}",
+      "// @asua purity: pure",
+      "// @asua exposure: ${2|public,internal|}",
+      "// @asua composition-role: composite"
+    ],
+    "description": "ASUA L4 Structure header"
+  },
+  "ASUA Header - L5 Meaning": {
+    "prefix": "asua-l5",
+    "body": [
+      "// @asua layer: meaning",
+      "// @asua kind: domain",
+      "// @asua runtime: ${1|client,universal|}",
+      "// @asua purity: ${2|pure,effectful|}",
+      "// @asua exposure: ${3|public,internal|}",
+      "// @asua composition-role: ${4|leaf,composite|}"
+    ],
+    "description": "ASUA L5 Meaning header"
+  },
+  "ASUA Header - L6 Element": {
+    "prefix": "asua-l6",
+    "body": [
+      "// @asua layer: element",
+      "// @asua kind: ui",
+      "// @asua runtime: ${1|client,universal|}",
+      "// @asua purity: pure",
+      "// @asua exposure: ${2|public,internal|}",
+      "// @asua composition-role: leaf"
+    ],
+    "description": "ASUA L6 Element header"
+  },
+  "ASUA Header - L0 Foundation": {
+    "prefix": "asua-l0",
+    "body": [
+      "// @asua layer: foundation",
+      "// @asua kind: infrastructure",
+      "// @asua runtime: ${1|server,client,universal|}",
+      "// @asua purity: ${2|pure,effectful|}",
+      "// @asua exposure: ${3|public,internal|}"
+    ],
+    "description": "ASUA L0 Foundation/Infrastructure header"
+  },
+  "ASUA Orchestrator Template": {
+    "prefix": "asua-orch",
+    "body": [
+      "// @asua layer: orchestrator",
+      "// @asua kind: orchestration",
+      "// @asua runtime: server",
+      "// @asua purity: effectful",
+      "// @asua exposure: public",
+      "// @asua composition-role: root",
+      "",
+      "export async function ${1:Name}Orchestrator({ ${2:param} }: { ${2:param}: ${3:string} }) {",
+      "  // ═══ PHASE 1: FETCH ═══",
+      "  const data = await ${4:getData}(${2:param})",
+      "",
+      "  // ═══ PHASE 2: DECIDE ═══",
+      "  const ${5:decision} = ${6:compute}(data)",
+      "",
+      "  // ═══ PHASE 3: COMPOSE ═══",
+      "  return (",
+      "    <${7:Layout}",
+      "      ${8:slot}={<${9:Component} />}",
+      "    />",
+      "  )",
+      "}"
+    ],
+    "description": "ASUA L3 Orchestrator with Fetch-Decide-Compose"
+  },
+  "ASUA Override": {
+    "prefix": "asua-override",
+    "body": [
+      "// @asua-override law:${1|1,2,3,4,5|} reason:\"${2:explanation}\" ticket:${3:PROJ-000} expires:${4:2026-12-31}"
+    ],
+    "description": "ASUA pragmatic override with tracking"
+  }
+}

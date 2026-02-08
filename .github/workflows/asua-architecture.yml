@@ -1,0 +1,58 @@
+name: ASUA Architecture Check
+on: [pull_request]
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+
+      # 1. Type check
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      # 2. ESLint — all ASUA laws
+      - name: ESLint ASUA laws
+        run: npx eslint src/ --max-warnings 0
+
+      # 3. Header validation (100% coverage required)
+      - name: Header coverage
+        run: |
+          TOTAL=$(find src -name '*.tsx' -o -name '*.ts' | grep -v test | grep -v index | wc -l)
+          HEADERED=$(grep -rl '@asua layer:' src --include='*.tsx' --include='*.ts' | grep -v test | grep -v index | wc -l)
+          echo "Header coverage: $HEADERED / $TOTAL"
+          if [ "$TOTAL" -ne "$HEADERED" ]; then
+            echo "❌ Not all modules have ASUA headers"
+            exit 1
+          fi
+
+      # 4. Contract lifecycle check
+      - name: Check sunset contracts
+        run: |
+          SUNSET=$(grep -rn '@sunset' src/contracts/ --include='*.ts' || true)
+          if echo "$SUNSET" | grep -q "$(date +%Y)"; then
+            echo "⚠️ Contracts approaching sunset:"
+            echo "$SUNSET"
+          fi
+
+      # 5. Override tracker
+      - name: Track overrides
+        run: |
+          OVERRIDES=$(grep -rn '@asua-override' src/ --include='*.tsx' --include='*.ts' || true)
+          COUNT=$(echo "$OVERRIDES" | grep -c '@asua-override' || true)
+          echo "Active ASUA overrides: $COUNT"
+          echo "$OVERRIDES"
+
+      # 6. Architecture metrics summary
+      - name: Metrics summary
+        run: |
+          echo "╔═══════════════════════════════════════════════╗"
+          echo "║            ASUA ARCHITECTURE AUDIT            ║"
+          echo "╠═══════════════════════════════════════════════╣"
+          echo "║ Law violations: $(npx eslint src/ --format json 2>/dev/null | grep -c 'asua/' || echo 0)"
+          echo "║ Active overrides: $(grep -rc '@asua-override' src/ --include='*.tsx' --include='*.ts' 2>/dev/null | tail -1 || echo 0)"
+          echo "╚═══════════════════════════════════════════════╝"
