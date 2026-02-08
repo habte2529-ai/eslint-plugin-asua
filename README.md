@@ -113,4 +113,4 @@ srcRoot: 'src',
 
 ## License
 
-MIT © Habtamu Geta
+Apache License 2.0 © Habtamu Geta

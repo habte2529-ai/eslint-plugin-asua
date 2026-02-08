@@ -1,5 +1,5 @@
 {
-  "name": "eslint-plugin-asua",
+  "name": "@habte2529-ai/eslint-plugin-asua",
   "version": "1.0.0",
   "description": "ESLint plugin enforcing ASUA (Axiom-Stratum Unified Architecture) laws for React and Next.js projects.",
   "keywords": [
@@ -59,6 +59,9 @@
   "homepage": "https://github.com/habte2529-ai/eslint-plugin-asua#readme",
   "bugs": {
     "url": "https://github.com/habte2529-ai/eslint-plugin-asua/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
