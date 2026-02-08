@@ -6,11 +6,10 @@
 
 import { DEFAULT_DIRECTORY_MAP, type Layer } from '../constants'
 import { parseASUAHeaders } from './header-parser'
-import path from 'path'
 
 export interface ResolverOptions {
   /** Custom directory-to-layer mapping (merges with defaults) */
-  directoryMap?: Record<string, Layer>
+  directoryMap?: Record<string, string>
   /** The project's src root (default: 'src') */
   srcRoot?: string
 }
@@ -23,7 +22,7 @@ export function resolveLayerFromPath(
   filePath: string,
   options: ResolverOptions = {}
 ): Layer | null {
-  const dirMap = { ...DEFAULT_DIRECTORY_MAP, ...options.directoryMap }
+  const dirMap = { ...DEFAULT_DIRECTORY_MAP, ...options.directoryMap } as Record<string, Layer>
   const srcRoot = options.srcRoot ?? 'src'
 
   // Normalize path

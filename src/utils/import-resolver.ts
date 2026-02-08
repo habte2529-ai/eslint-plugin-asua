@@ -15,7 +15,7 @@ export function resolveImportLayer(
   importPath: string,
   options: ResolverOptions = {}
 ): Layer | null {
-  const dirMap = { ...DEFAULT_DIRECTORY_MAP, ...options.directoryMap }
+  const dirMap = { ...DEFAULT_DIRECTORY_MAP, ...options.directoryMap } as Record<string, Layer>
 
   // Normalize
   const normalized = importPath.replace(/\\/g, '/')

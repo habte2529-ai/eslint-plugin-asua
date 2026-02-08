@@ -47,13 +47,13 @@ export default createRule<Options, 'downOnly'>({
     const filename = context.filename ?? context.getFilename()
     const sourceCode = context.sourceCode?.getText() ?? context.getSourceCode().getText()
 
-    const sourceLayer = resolveLayer(filename, sourceCode, options)
+    const sourceLayer = resolveLayer(filename, sourceCode, options as Parameters<typeof resolveLayer>[2])
     if (!sourceLayer) return {} // Not in an ASUA-managed directory
 
     return {
       ImportDeclaration(node) {
         const importPath = node.source.value
-        const targetLayer = resolveImportLayer(importPath, options)
+        const targetLayer = resolveImportLayer(importPath, options as Parameters<typeof resolveImportLayer>[1])
         if (!targetLayer) return // External or unresolvable
 
         if (!isImportAllowed(sourceLayer, targetLayer)) {
@@ -69,14 +69,30 @@ export default createRule<Options, 'downOnly'>({
       },
 
       // Also check dynamic imports: import('...')
+      ImportExpression(node) {
+        const arg = node.source
+        if (arg.type === 'Literal' && typeof arg.value === 'string') {
+          const targetLayer = resolveImportLayer(arg.value, options as Parameters<typeof resolveImportLayer>[1])
+          if (!targetLayer) return
+
+          if (!isImportAllowed(sourceLayer, targetLayer)) {
+            context.report({
+              node,
+              messageId: 'downOnly',
+              data: {
+                sourceLayer: LAYER_DISPLAY[sourceLayer],
+                targetLayer: LAYER_DISPLAY[targetLayer],
+              },
+            })
+          }
+        }
+      },
+      // Also check require('...')
       CallExpression(node) {
-        if (
-          node.callee.type === 'Import' ||
-          (node.callee.type === 'Identifier' && node.callee.name === 'require')
-        ) {
+        if (node.callee.type === 'Identifier' && node.callee.name === 'require') {
           const arg = node.arguments[0]
           if (arg?.type === 'Literal' && typeof arg.value === 'string') {
-            const targetLayer = resolveImportLayer(arg.value, options)
+            const targetLayer = resolveImportLayer(arg.value, options as Parameters<typeof resolveImportLayer>[1])
             if (!targetLayer) return
 
             if (!isImportAllowed(sourceLayer, targetLayer)) {
