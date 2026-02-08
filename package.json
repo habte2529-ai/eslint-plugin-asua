@@ -14,7 +14,7 @@
     "axiom"
   ],
   "author": "Habtamu Geta <habtamu.geta@aastustudent.edu.et>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -54,11 +54,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/habtamu-geta/eslint-plugin-asua"
+    "url": "git+https://github.com/habte2529-ai/eslint-plugin-asua.git"
   },
-  "homepage": "https://github.com/habtamu-geta/eslint-plugin-asua#readme",
+  "homepage": "https://github.com/habte2529-ai/eslint-plugin-asua#readme",
   "bugs": {
-    "url": "https://github.com/habtamu-geta/eslint-plugin-asua/issues"
+    "url": "https://github.com/habte2529-ai/eslint-plugin-asua/issues"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
